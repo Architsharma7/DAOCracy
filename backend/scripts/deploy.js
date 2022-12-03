@@ -1,31 +1,89 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const { ethers } = require('hardhat');
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
-
-  const lockedAmount = hre.ethers.utils.parseEther("1");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
+  /* 
+    Deployement of the Verification Contract.
+  */
+  const verificationContract = await ethers.getContractFactory('Verification');
+  const deployedVerificationContract = await verificationContract.deploy();
+  await deployedVerificationContract.deployed();
   console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `Verification contract deployed at ${deployedVerificationContract.address}`
+  );
+
+  /*
+    Deployment of NFTMinting Contract Address.
+  */
+  const nftMintingContract = await ethers.getContractFactory('NFTMinting');
+  const deployNFTMintingContract = await nftMintingContract.deploy(
+    deployedVerificationContract.address
+  );
+  await deployNFTMintingContract.deployed();
+  console.log(
+    'NFTMinting contract is deployed at: ',
+    deployNFTMintingContract.address
+  );
+
+  /*
+    Deployment of the Country DAO contract Address.
+  */
+  const countryDAOContract = await ethers.getContractFactory('MainDAO');
+  const deployCountryDAOContract = await countryDAOContract.deploy('INDIA');
+  await deployCountryDAOContract.deployed();
+  console.log(
+    'Country DAO contract is deployed at: ',
+    deployCountryDAOContract.address
+  );
+
+  /*
+    Deployment of the State DAO contract Address.
+  */
+  const upStateDAOContract = await ethers.getContractFactory('StateDAO');
+  const deployUPStateDAOContract = await upStateDAOContract.deploy(
+    'Uttar Pradesh',
+    1,
+    deployNFTMintingContract.address
+  );
+  await deployUPStateDAOContract.deployed();
+  console.log(
+    'Uttar Pradesh State DAO contract is deployed at: ',
+    deployUPStateDAOContract.address
+  );
+
+  /*
+    Deployment of the State DAO contract Address.
+  */
+  const kStateDAOContract = await ethers.getContractFactory('StateDAO');
+  const deployKStateDAOContract = await kStateDAOContract.deploy(
+    'Karnataka',
+    2,
+    deployNFTMintingContract.address
+  );
+  await deployKStateDAOContract.deployed();
+  console.log(
+    'Karnataka State DAO contract is deployed at: ',
+    deployKStateDAOContract.address
+  );
+
+  /*
+    Deployment of the State DAO contract Address.
+  */
+  const APStateDAOContract = await ethers.getContractFactory('StateDAO');
+  const deployAPStateDAOContract = await APStateDAOContract.deploy(
+    'Andhra Pradesh',
+    3,
+    deployNFTMintingContract.address
+  );
+  await deployAPStateDAOContract.deployed();
+  console.log(
+    'Andhra Pradesh State DAO contract is deployed at: ',
+    deployAPStateDAOContract.address
   );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });

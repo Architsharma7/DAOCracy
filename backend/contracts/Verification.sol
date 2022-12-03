@@ -4,12 +4,12 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /*
-Contract WhitelistingAddress:
+Contract Verification:
     This is the contract which will allow users to get whitelisted.
     Users once whitelisted will be able to mint the NFT's based on the location they belong.
 */
 
-contract WhitelistingAddress is Ownable {
+contract Verification is Ownable {
     // Total number of addresses whitelisted till now
     uint256 public numberOfAddresses;
 

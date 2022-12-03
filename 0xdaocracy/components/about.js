@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "../utils/motion";
 import Form from "./form";
+import dynamic from "next/dynamic";
 
 const About = () => {
   const [openForm, setOpenForm] = useState(false);
@@ -12,7 +13,7 @@ const About = () => {
   };
   const { address } = useContext(ProjectContext);
   return (
-    <div className="bg-black w-screen h-screen">
+    <div className="bg-black w-screen h-screen mb-20">
       <section className="sm:p-16 xs:p-8 px-6 relative z-10 justify-center">
         <div className="gradient-02 z-0" />
         <motion.div
@@ -27,7 +28,7 @@ const About = () => {
             className="mt-[2px] font-normal sm:text-[44px] text-[20px] text-center text-secondary-white sm:w-3/5 md:w-3/5 lg:w-3/5 xl:w-3/5 align-top"
           >
             <span className="font-extrabold text-white">
-              A DAO based Parliamentary system of a country with the more{" "}
+              A DAO based Parliamentary system for a country with more &nbsp; 
               <span
                 className="bg-gradient-to-r bg-clip-text  text-transparent 
             from-indigo-500 via-purple-500 to-indigo-500
@@ -60,7 +61,7 @@ const About = () => {
               onClick={handleChange}
             >
               <span className="pl-3 text-indigo-400 group-hover:text-gray-100 transition duration-200">
-                Get started &rarr;
+                Verify Yourself &rarr;
               </span>
             </button>
           )}
@@ -71,4 +72,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default dynamic (() => Promise.resolve(About), {ssr: false})

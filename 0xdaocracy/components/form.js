@@ -1,27 +1,35 @@
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from 'next/router'
 
 const Form = () => {
-  const [formData, setFormData] = useState({
-    aadhar: "",
-  });
-
+  const [formData, setFormData] = useState("");
+  let router= useRouter();
+  function redirect() {
+    router.push('/dashboard')
+ } 
   const handleSubmit = (event) => {
-    setFormData({[event.target.aadhar]: event.target.value});
+    event.preventDefault();
     console.log(formData);
+    setFormData("");
   };
+
   return (
     <div>
-      <input
-        type="text"
-        name="aadhar"
-        placeholder="Enter your aadhar no."
-        onChange={(e) => setFormData(e.target.value)}
-      ></input>
-      <button className="bg-white text-black" onSubmit={handleSubmit}>
-        submit form
-      </button>
+      <form onSubmit={handleSubmit} className="flex flex-row mt-12 justify-center w-3/5 float-left mb-12">
+        <input
+          type="text"
+          value={formData}
+          onChange={(e) => setFormData(e.target.value)}
+          placeholder="Enter your aadhar no."
+          className="py-2 px-7 rounded-lg mr-5"
+        />
+        <div className="flex flex-row">
+          <input type="submit" className="bg-white cursor-pointer text-black py-2 px-7 rounded-md" onClick={redirect} />
+        </div>
+      </form>
     </div>
   );
 };
 
-export default Form;
+export default dynamic (() => Promise.resolve(Form), {ssr: false})

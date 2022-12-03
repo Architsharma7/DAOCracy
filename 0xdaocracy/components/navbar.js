@@ -6,11 +6,12 @@ import { ProjectContext } from "../context/projectcontext";
 import { useContext } from "react";
 import { shortenAddress } from "../utils/addressshortner";
 import styles from "./styles";
+import dynamic from "next/dynamic";
 
 
 /// TODO: Solve the hydration error (prob bc while changing connect wallet button to address shortner, not using correct way)
 
-export default function Navbar(){
+function Navbar(){
 
     const { address } = useContext(ProjectContext);
 
@@ -23,7 +24,7 @@ export default function Navbar(){
       >
         <div className="h-full py-4 flex justify-between items-center px-6 text-white w-full">
           <div className="mx-3">
-              <p className={`${styles.fontFamily} text-lg sm:text-5xl leading-normal tracking-wider 
+              <p className={`${styles.fontFamily} text-lg sm:text-5xl leading-normal font-semibold 
             text-white`}>DAOCracy</p>
           </div>
           <div>
@@ -35,3 +36,5 @@ export default function Navbar(){
     </div>
   );
 };
+
+export default dynamic (() => Promise.resolve(Navbar), {ssr: false})

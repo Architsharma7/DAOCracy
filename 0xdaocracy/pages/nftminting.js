@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount, useContract, useProvider, useSigner } from 'wagmi';
-import { nftMintingABI, nftMintingAddress } from '../constants/constants';
+import { nftMintingABI, nftMintingAddress } from '../constants/constant';
 
 export default function NFTMinting() {
   const { address, isConnected } = useAccount();

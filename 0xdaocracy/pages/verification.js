@@ -1,13 +1,19 @@
-import React ,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useAccount, useContract, useProvider, useSigner } from 'wagmi';
-import { verificationABI, verificationAddress } from '../constants/constant';
+import {
+  verificationABI,
+  verificationAddress,
+  nftMintingABI,
+  nftMintingAddress,
+} from '../constants/constant';
 import { useRouter } from 'next/router';
 
-export default function Verification () {
+export default function Verification() {
   const { address, isConnected } = useAccount();
   const provider = useProvider();
   const { data: signer } = useSigner();
   const [isVerified, setIsVerified] = useState(false);
+  const [isMinted, setIsMinted] = useState(false);
 
   const verificationContract = useContract({
     address: verificationAddress,
@@ -15,17 +21,34 @@ export default function Verification () {
     signerOrProvider: signer || provider,
   });
 
-  let router= useRouter();
+  const nftMintingContract = useContract({
+    address: nftMintingAddress,
+    abi: nftMintingABI,
+    signerOrProvider: signer || provider,
+  });
 
-   const VerifyAddress = async () => {
+  let router = useRouter();
+
+  const VerifyAddress = async () => {
     try {
-      const tx = await verificationContract.addAddressToWhitelist(address);
-      await tx.wait();
-      console.log(tx);
-      alert('Citizen Verified !');
-      setIsVerified(true);
-      if(isVerified === true){
-        router.push('/nftminting')
+      const tx2 = await verificationContract.isWhitelisted(address);
+      // await tx2.wait();
+      if (tx2) {
+        redirect();
+      } else {
+        const tx = await verificationContract.addAddressToWhitelist(address);
+        await tx.wait();
+        console.log(tx);
+        alert('Citizen Verified !');
+        setIsVerified(true);
+        const tx1 = await nftMintingContract.mintForCountry();
+        await tx1.wait();
+        console.log(tx1);
+        alert('Minted NFT for Country!');
+        setIsMinted(true);
+        if (isVerified) {
+          router.push('/nftminting');
+        }
       }
     } catch (err) {
       console.error(err);
@@ -63,20 +86,46 @@ export default function Verification () {
     }
   };
 
-  // useEffect(() => {
-  //   checkIfVerified();
-  // }, [isConnected]);
+  useEffect(() => {
+    renderButton();
+  }, []);
 
+  function redirect() {
+    router.push('/nftminting');
+  }
+
+  const renderButton = () => {
+    if (isMinted) {
+      return (
+        <button
+          className="bg-white text-black flex justify-center flex-col py-2 px-4 rounded-lg"
+          onClick={redirect}
+        >
+          {' '}
+          Dashboard
+        </button>
+      );
+    } else {
+    }
+  };
   return (
     <div>
       <div className="flex justify-center mt-20 text-5xl font-semibold">
-        <p>The New Form of Governance</p>
+        <h1>The New Form of Governance</h1>
       </div>
       <div className="flex justify-center mt-20">
-      <button className="bg-white text-black flex justify-center flex-col py-2 px-4 rounded-lg" onClick={VerifyAddress}> Verify Yourself</button>
+        <button
+          className="bg-white text-black flex justify-center flex-col py-2 px-4 rounded-lg"
+          onClick={VerifyAddress}
+        >
+          {' '}
+          Verify Yourself
+        </button>
       </div>
     </div>
   );
 }
 
-{/*  */}
+{
+  /*  */
+}

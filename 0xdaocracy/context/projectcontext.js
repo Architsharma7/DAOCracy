@@ -19,7 +19,7 @@ export const ProjectContextProvider = ({ children }) => {
   return(
     <ProjectContext.Provider
     value={{
-        address
+        address,
     }}>
         {children}
     </ProjectContext.Provider>

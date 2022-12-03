@@ -1,6 +1,7 @@
 import React ,{ useState, useEffect } from "react";
 import { useAccount, useContract, useProvider, useSigner } from 'wagmi';
 import { verificationABI, verificationAddress } from '../constants/constant';
+import { useRouter } from 'next/router';
 
 export default function Verification () {
   const { address, isConnected } = useAccount();
@@ -14,12 +15,18 @@ export default function Verification () {
     signerOrProvider: signer || provider,
   });
 
+  let router= useRouter();
+
    const VerifyAddress = async () => {
     try {
       const tx = await verificationContract.addAddressToWhitelist(address);
       await tx.wait();
       console.log(tx);
       alert('Citizen Verified !');
+      setIsVerified(true);
+      if(isVerified === true){
+        router.push('/nftminting')
+      }
     } catch (err) {
       console.error(err);
     }
@@ -56,16 +63,20 @@ export default function Verification () {
     }
   };
 
-  useEffect(() => {
-    checkIfVerified();
-  }, [isConnected]);
+  // useEffect(() => {
+  //   checkIfVerified();
+  // }, [isConnected]);
 
   return (
     <div>
-      <p>Hey This is where people will be verified.</p>
-      <div>
-        <button className="bg-white text-black" onClick={VerifyAddress}> Verify Yourself</button>
+      <div className="flex justify-center mt-20 text-5xl font-semibold">
+        <p>The New Form of Governance</p>
+      </div>
+      <div className="flex justify-center mt-20">
+      <button className="bg-white text-black flex justify-center flex-col py-2 px-4 rounded-lg" onClick={VerifyAddress}> Verify Yourself</button>
       </div>
     </div>
   );
 }
+
+{/*  */}

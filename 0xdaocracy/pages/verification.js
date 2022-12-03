@@ -1,9 +1,8 @@
-import React from 'react';
-import React, { useState, useEffect } from 'react';
+import React ,{ useState, useEffect } from "react";
 import { useAccount, useContract, useProvider, useSigner } from 'wagmi';
-import { verificationABI, verificationAddress } from '../constants/constants';
+import { verificationABI, verificationAddress } from '../constants/constant';
 
-export default function () {
+export default function Verification () {
   const { address, isConnected } = useAccount();
   const provider = useProvider();
   const { data: signer } = useSigner();
@@ -15,7 +14,7 @@ export default function () {
     signerOrProvider: signer || provider,
   });
 
-  const verifyAddress = async () => {
+   const VerifyAddress = async () => {
     try {
       const tx = await verificationContract.addAddressToWhitelist(address);
       await tx.wait();
@@ -59,11 +58,14 @@ export default function () {
 
   useEffect(() => {
     checkIfVerified();
-  }, []);
+  }, [isConnected]);
 
   return (
     <div>
       <p>Hey This is where people will be verified.</p>
+      <div>
+        <button className="bg-white text-black" onClick={VerifyAddress}> Verify Yourself</button>
+      </div>
     </div>
   );
 }

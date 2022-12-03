@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+
+const Data = "999941057051"
 
 const Form = () => {
   const [formData, setFormData] = useState("");
   let router= useRouter();
   function redirect() {
-    router.push('/dashboard')
+    router.push('/verification')
  } 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
+    if(Data === formData){
+        console.log("hello")
+    }
+    else(
+        alert("You are not a citizen of this country")
+    )
     setFormData("");
   };
 

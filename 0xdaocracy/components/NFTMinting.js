@@ -92,7 +92,7 @@ export default function NFTMinting() {
     if (isVerified) {
       mintForCountry();
     }
-  }, [isConnected]);
+  }, [isConnected, isVerified]);
 
   return (
     <div>

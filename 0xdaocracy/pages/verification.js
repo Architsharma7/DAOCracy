@@ -55,7 +55,6 @@ export default function Verification() {
     }
   };
 
-  // Only Owner can view this button.
   const removeVerifiedAddress = async () => {
     try {
       const tx = await verificationContract.removeAddressFromWhitelist(address);
@@ -67,8 +66,6 @@ export default function Verification() {
     }
   };
 
-  // Button will be visible to all.
-  // Need to get the string to pass it to the user.
   const checkIfVerified = async () => {
     try {
       const tx = await verificationContract.isWhitelisted(address);
@@ -124,8 +121,4 @@ export default function Verification() {
       </div>
     </div>
   );
-}
-
-{
-  /*  */
 }

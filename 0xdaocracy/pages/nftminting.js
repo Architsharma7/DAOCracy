@@ -7,13 +7,10 @@ export default function NFTMinting() {
   const provider = useProvider();
   const { data: signer } = useSigner();
   const [isVerified, setIsVerified] = useState(false);
-  // Need to import the function from the verification js.
-  // We will use it when the page loads. If isVerified then show mint button else show the way to verification button.
-  // We can make the jsx files of this and import them on the go
   const [stateId, setStateId] = useState(0);
   const [totalStates, setTotalStates] = useState(0);
-  const [updatedStateCount, setUpdatedStateCount] = useState(0); // Take input from the owner if they want to update the state count.
-  const [updatedNFTURI, setUpdatedNFTURI] = useState(0); // Take input from the owner to change the NFT.
+  const [updatedStateCount, setUpdatedStateCount] = useState(0);
+  const [updatedNFTURI, setUpdatedNFTURI] = useState(0);
 
   const nftMintingContract = useContract({
     address: nftMintingAddress,
@@ -33,7 +30,6 @@ export default function NFTMinting() {
     }
   };
 
-  // Need to take the input of id for this and then pass it.
   const mintForState = async () => {
     try {
       for (i = 1; i <= totalStates; i++) {
@@ -78,7 +74,6 @@ export default function NFTMinting() {
 
   const updateNFTURI = async () => {
     try {
-      // Exapmple of the NFT URI: "https://gateway.pinata.cloud/ipfs/Qmbygo38DWF1V8GttM1zy89KzyZTPU2FLUzQtiDvB7q6i5/{id}.json"
       const tx = await nftMintingContract.setURI(updatedNFTURI);
       await tx.wait();
       console.log(tx);
@@ -94,9 +89,5 @@ export default function NFTMinting() {
     }
   }, [isConnected, isVerified]);
 
-  return (
-    <div>
-      <p>NFT minting Page will go here.</p>
-    </div>
-  );
+  return <div></div>;
 }

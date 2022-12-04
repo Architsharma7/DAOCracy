@@ -30,14 +30,6 @@ contract NFTMinting is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         _;
     }
 
-    /*
-        id:
-            0 => Country NFT
-            1 => State1 NFT 
-            2 => State2 NFT 
-            3 => State3 NFT 
-            
-    */
     constructor(
         address _whitelistedAddresses
     )
@@ -67,18 +59,6 @@ contract NFTMinting is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
      Function mint takes id of the token to be minted,
      here the id will be used to mint the NFT based on location.
      EG: 1 for MP, 2 for MH, 3 for Karnataka etc...
-
-     @SAURABH @ARCHIT @PRATHAMESH 
-     We can check the balance of the address in frontend itself.
-     We can run a for loop and check if the address has already,
-     minted the address for anyone of the location. 
-     If not then only allow to mint. 
-     Else prompt with message that 
-     "You already have NFT for <location name> state. 
-      Please burn it incase you need to change the DAO."
-
-    Before Mintitng make sure that State exist?
-
     */
     function mintForState(uint256 id) public onlyWhenNotPaused {
         require(whiteList.isWhitelisted(msg.sender), "Address not verified!");

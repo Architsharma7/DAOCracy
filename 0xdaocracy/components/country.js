@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAccount, useContract, useProvider, useSigner } from 'wagmi';
 import { countryDAOABI, countryDAOAddress } from '../constants/constants';
 
-export default function country() {
+export default function Country() {
   const { address, isConnected } = useAccount();
   const provider = useProvider();
   const { data: signer } = useSigner();

@@ -42,7 +42,7 @@ contract NFTMinting is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         address _whitelistedAddresses
     )
         ERC1155(
-            "https://gateway.pinata.cloud/ipfs/Qmbygo38DWF1V8GttM1zy89KzyZTPU2FLUzQtiDvB7q6i5/{id}.json"
+            "https://gateway.pinata.cloud/ipfs/QmeKQtHDWyV7vCQJEV2W5RSL3qWkztNU239cenkL4tdNkt/{id}.json"
         )
     {
         whiteList = IWhitelist(_whitelistedAddresses);
